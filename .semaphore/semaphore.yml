@@ -21,5 +21,18 @@ blocks:
       jobs:
         - name: check style + security
           commands:
+            - sem-version ruby 2.7.3
+            - sem-version node 14.16.1
+            - checkout
+            - cache restore
+            - bundle install
             - bundle exec rubocop
             - bundle exec brakeman
+  - name: Integration
+    task:
+      jobs:
+        - name: Testing
+          commands:
+            - sem-service start postgres
+            - 'bundle exec rake db:setup'
+            - bundle exec rspec spec/features

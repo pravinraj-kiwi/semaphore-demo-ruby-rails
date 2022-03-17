@@ -5,14 +5,21 @@ agent:
     type: e1-standard-2
     os_image: ubuntu2004
 blocks:
-  - name: GIT Pull
+  - name: Setup
     task:
       jobs:
-        - name: 'Job #1'
+        - name: Bundle Install
           commands:
+            - sem-version ruby 2.7.3
+            - sem-version node 14.16.1
             - checkout
+            - cache restore
+            - bundle install
+            - cache store
   - name: Testing
     task:
       jobs:
-        - name: Test
-          commands: []
+        - name: check style + security
+          commands:
+            - bundle exec rubocop
+            - bundle exec brakeman

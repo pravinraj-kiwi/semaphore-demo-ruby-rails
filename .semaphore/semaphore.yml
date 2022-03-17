@@ -60,3 +60,9 @@ blocks:
           commands:
             - artifact push job logs/test.log
             - artifact push job screenshots
+  - name: 'Block #5'
+    task:
+      jobs:
+        - name: 'Job #1'
+          commands:
+            - artifact push project myapp-v1.25.tar.gz

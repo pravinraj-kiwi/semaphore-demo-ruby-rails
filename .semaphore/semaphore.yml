@@ -5,9 +5,14 @@ agent:
     type: e1-standard-2
     os_image: ubuntu2004
 blocks:
-  - name: 'Block #1'
+  - name: GIT Pull
     task:
       jobs:
         - name: 'Job #1'
           commands:
             - checkout
+  - name: Testing
+    task:
+      jobs:
+        - name: Test
+          commands: []

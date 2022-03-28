@@ -1,72 +1,16 @@
 version: v1.0
-name: Initial Pipeline
+name: Ruby
 agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu2004
 blocks:
-  - name: Setup
+  - name: bundle exec rspec
     task:
       jobs:
-        - name: Bundle Install
+        - name: bundle install
           commands:
-            - sem-version ruby 2.7.3
-            - sem-version node 14.16.1
             - checkout
-            - cache restore
-            - bundle install
-            - cache store
-      prologue:
-        commands:
-          - sem-version ruby 2.7.3
-          - sem-version node 14.16.1
-          - checkout
-          - cache restore
-          - bundle install
-          - cache store
-          - sem-service start postgres
-          - 'bundle exec rake db:setup'
-  - name: Testing
-    task:
-      jobs:
-        - name: check style + security
-          commands:
-            - sem-version ruby 2.7.3
-            - sem-version node 14.16.1
-            - checkout
-            - cache restore
-            - bundle install
-            - bundle exec rubocop
-            - bundle exec brakeman
-  - name: Integration
-    task:
-      jobs:
-        - name: Testing
-          commands:
-            - sem-version ruby 2.7.3
-            - sem-version node 14.16.1
-            - checkout
-            - cache restore
-            - bundle install
-            - bundle exec rubocop
-            - bundle exec brakeman
-            - sem-service start postgres
-            - 'bundle exec rake db:setup'
-            - bundle exec rspec spec/features
-      prologue:
-        commands:
-          - artifact push job logs/test.log
-          - artifact push job screenshots
-  - name: Artifacts
-    task:
-      jobs:
-        - name: Saving logs
-          commands:
-            - artifact push job logs/test.log
-            - artifact push job screenshots
-  - name: 'Block #5'
-    task:
-      jobs:
-        - name: 'Job #1'
-          commands:
-            - artifact push project myapp-v1.25.tar.gz
+            - sem-version ruby 2.6.0
+            - bundle install --deployment --path vendor/bundle
+            - bundle exec rspec
